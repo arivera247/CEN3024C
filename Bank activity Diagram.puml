@@ -1,0 +1,83 @@
+@startuml
+'!theme blueprint
+title
+Tiered Architecture Assignment
+<i>Bank ATM Activity Diagram</i>
+
+By:
+Alexander Rivera
+
+Submitted to:
+Prof. Mary Walauskis
+
+end title
+
+note left
+Start
+end note
+(*) --> "Bank Patron"
+
+
+"Bank Patron" --> "Login Screen"
+if "Select Option"
+-right-> "Selection: Debit Card"
+else
+-left-> "Selection: Mobile Wallet"
+endif
+
+"Selection: Debit Card" -down-> "Action: Enter Pin"
+"Selection: Mobile Wallet" -down-> "Action: Enter Pin"
+if "Authorization"
+-right-> "Correct"
+else
+-left-> "Incorrect"
+endif
+
+"Correct" -down-> "Show: Language Selection"
+if "Language Select"
+-right-> "Selection: English"
+else
+-left-> "Selection: Spanish"
+endif
+"Incorrect" -down-> "Show: Incorrect Pin"
+"Show: Incorrect Pin" -left-> "Return: Login Screen"
+
+"Selection: English" -down-> "Show: Main Menu"
+"Selection: Spanish" -down-> "Show: Main Menu"
+
+"Show: Main Menu" -down-> "Selection: Deposit"
+"Show: Main Menu" -down-> "Selection: Withdraw"
+"Show: Main Menu" -down---> "Show: Finish"
+
+"Selection: Deposit" -down-> "Selection: Cash"
+"Selection: Deposit" -down-> "Selection: Check"
+
+
+"Selection: Withdraw" -down-> "Selection: Amount"
+
+"Selection: Cash" -down-> "Show: New Balance"
+"Selection: Check" -down-> "Show: New Balance"
+"Selection: Amount" -down-> "Show: New Balance"
+
+"Show: New Balance" -> "Show: Main Menu"
+"Show: New Balance" -> "Show: Finish"
+
+"Show: Finish" -down-> "Show: Transaction Complete"
+if "Debit Card"
+-left-> [yes]"Release:Debit Card"
+else
+-right-> [no]"Print: Receipt"
+endif
+
+"Release:Debit Card" -down-> "Print: Receipt"
+
+"Print: Receipt" -down-> (*)
+note left
+End
+end note
+
+
+@enduml
+
+
+
