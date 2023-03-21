@@ -1,54 +1,26 @@
-package CEN_3024C_25736_Alex_Rivera;
+package com.example.newjavafxproj;
 
-import java.net.*;
-import java.io.*;
-import java.util.*;
-
-public class Main {
-    public static void main(String[] args) throws Exception {
-        //Reading Directly from a URL tutorial
-        //https://docs.oracle.com/javase/tutorial/networking/urls/readingURL.html
-        URL TPG = new URL("https://www.gutenberg.org/files/1065/1065-h/1065-h.htm");  //Modified URL from tutorial to reflect required URL
-        BufferedReader in = new BufferedReader
-                (
-                        new InputStreamReader(TPG.openStream())
-                );
-
-        String inputLine;
+import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
+import java.io.IOException;
 
 
-        StringBuilder htmlText = new StringBuilder();
-        while ((inputLine = in.readLine()) != null) {  //FIXME - adjust parameters to skip text through first header tag "<h1> and after end of chapter comment tag "<!--end chapter-->"
-            //System.out.println(inputLine);  //Contents of webpage successfully printed. Removing by comment for test-first development.
-            htmlText.append(inputLine);
-        }
-        in.close();
+public class Main extends Application {
+    @Override
+    public void start(Stage stage) throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("GUI.fxml"));
+        Scene scene = new Scene(fxmlLoader.load(), 320, 240);
+        stage.setTitle("Word Occurrences");
+        stage.setScene(scene);
+        stage.show();
+    }
 
-        // Remove all HTML tags and store the cleaned text in a string
-        //https://www.javatpoint.com/java-string-replaceall
-        String filteredText = htmlText.toString().replaceAll("<[^>]*>", "");
-        //FIXME - remove punctuation, header, and footer information using regular expressions.
-
-
-        // Split the cleaned text into words
-        String[] words = filteredText.split(" ");
-        //FIXME - expand to include punctuation marks
-
-        // HashMap counting word occurrences
-        //https://www.geeksforgeeks.org/java-util-hashmap-in-java-with-examples/
-        //FIXME - expand to provide only top 20 results
-        Map<String, Integer> wordCounts = new HashMap<>();
-        for (String word : words) {
-            wordCounts.put(word, wordCounts.getOrDefault(word, 0) + 1);
-        }
-
-        // Sort the word counts by frequency
-        List<Map.Entry<String, Integer>> wordCountList = new ArrayList<>(wordCounts.entrySet());
-        wordCountList.sort((entry1, entry2) -> entry2.getValue() - entry1.getValue());
-
-        // Output the word counts as a two-column array
-        for (Map.Entry<String, Integer> entry : wordCountList) {
-            System.out.println(entry.getKey() + " - " + entry.getValue()); //Prints hash map with hyphen separated values
-        }
+    public static void main(String[] args) {
+        launch();
     }
 }
+
+
+
